@@ -1,7 +1,14 @@
+/* eslint-disable no-unreachable */
 import mongoose, { Schema } from "mongoose";
+import { getCountries, getCityByCountry } from "../utils/countries";
+import _ from "lodash";
 
 const roomSchema = new Schema({
-	roomType: {
+	roomNumber: {
+		type: Number,
+		required: true
+	},
+	type: {
 		type: String,
 		enum: ["STANDARD", "LUX", "ULTRA_LUX", "KING_SIZE"],
 		default: "STANDARD"
@@ -23,7 +30,8 @@ const hotelSchema = new Schema({
 	name: String,
 	country: {
 		type: String,
-		required: true
+		required: true,
+		enum: getCountries()
 	},
 	city: {
 		type: String,
@@ -35,6 +43,41 @@ const hotelSchema = new Schema({
 	},
 	rooms: [roomSchema]
 });
+
+async function addRoomToHotel(hotelID, newRooms) {
+	try {
+		let hotel = await Hotel.findById(hotelID);
+		if (!hotel) throw new Error("Hotel is not exist");
+
+		let rooms = hotel.rooms;
+		rooms.push(...newRooms);
+
+		return await hotel.save();
+	} catch (e) {
+		console.error(e);
+	}
+}
+
+async function createHotel(newHotel) {
+	try {
+		let allowedCities = getCityByCountry(newHotel.country);
+		if (allowedCities && allowedCities.includes(newHotel.city)) {
+			let hotel = await Hotel.create(newHotel);
+			return hotel;
+		} else {
+			throw new Error("The Given City or Country not valid");
+		}
+	} catch (e) {
+		console.error(e);
+	}
+}
+
+// async function bookRoom(hotelID, room)
+
+hotelSchema.statics = {
+	addRoomToHotel,
+	createHotel
+};
 
 const Hotel = mongoose.model("Hotel", hotelSchema);
 export default Hotel;

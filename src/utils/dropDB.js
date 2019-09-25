@@ -19,6 +19,7 @@ const { MLAB_USER, MLAB_PASSWORD, MONGO_URI } = process.env;
 			if (collection.name !== "system.indexes")
 				mongoose.connection.dropCollection(collection.name);
 		});
+		console.log("DB dropped");
 	} catch (e) {
 		console.warn(e);
 	}

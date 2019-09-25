@@ -1,0 +1,26 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch via NPM",
+            "runtimeExecutable": "yarn",
+            "runtimeArgs": [
+                "run",
+                "watch"
+			],
+			"restart": true
+        },
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Run Debug Server",
+			"program": "${workspaceFolder}/source/run-server.js",
+			"cwd": "${workspaceFolder}/source"
+		}
+	]
+}

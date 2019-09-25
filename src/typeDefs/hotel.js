@@ -20,14 +20,16 @@ export default gql`
     }
 
     type Room {
-        type(type: RoomTypes): String!
+        roomNumber: Int!
+        type: String!
         price: Int!
         currency: String!
         available: Boolean!
     }
 
     input CreateRoomInput {
-        type: String!
+        roomNumber: Int!
+        type: RoomTypes
         price: Int!
         currency: String!
         available: Boolean!

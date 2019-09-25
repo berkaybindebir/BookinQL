@@ -11,7 +11,7 @@ const { PORT, NODE_ENV, MLAB_USER, MLAB_PASSWORD, MONGO_URI } = process.env;
 	try {
 		await mongoose.connect(
 			`mongodb://${MLAB_USER}:${MLAB_PASSWORD}@${MONGO_URI}`,
-			{ useNewUrlParser: true }
+			{ useNewUrlParser: true, useFindAndModify: false }
 		);
 
 		const app = express();

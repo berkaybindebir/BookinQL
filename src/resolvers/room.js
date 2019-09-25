@@ -1,31 +1,15 @@
+/* eslint-disable no-unused-vars */
 import { Hotel } from "../models";
 
 export default {
 	Query: {
-		hotel: (root, { id }, contx, info) => {
-			return Hotel.findById(id);
-		},
-		hotels: (root, args, contx, info) => {
-			return Hotel.find({});
-		}
+		hotel: (root, { id }, contx, info) => Hotel.findById(id),
+		hotels: (root, args, contx, info) => Hotel.find({})
 	},
 	Mutation: {
-		createHotel: async (root, args, contx, info) => {
-			let { name, country, city, address, rooms } = args;
-			try {
-				let hotel = await Hotel.create({
-					name,
-					country,
-					city,
-					address
-				});
-				hotel.rooms.push(rooms);
-				return hotel;
-			} catch (e) {
-				console.log(e);
-			}
-		},
-		addRoomToHotel: (root, args, contx, info) => {},
+		createHotel: async (root, args, contx, info) => Hotel.createHotel(args),
+		addRoomToHotel: async (root, args, contx, info) =>
+			Hotel.addRoomToHotel(args.id, args.rooms),
 		setRoomStatus: (root, args, contx, info) => {}
 	}
 };
