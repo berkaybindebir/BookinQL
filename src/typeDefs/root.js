@@ -4,7 +4,7 @@ export default gql`
   type Query {
     _: String
   }
-  type Mutations {
+  type Mutation {
     _: String
   }
   type Subscription {

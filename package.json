@@ -5,7 +5,8 @@
   "license": "MIT",
   "author": "Berkay Bindebir <berkaybindebir@gmail.com> (http://github.com/berkaybindebir)",
   "scripts": {
-    "watch": "nodemon --exec babel-node index.js"
+    "watch": "nodemon --exec babel-node index.js",
+    "dropDB": "babel-node ./src/utils/dropDB.js"
   },
   "dependencies": {
     "apollo-server-express": "^2.9.4",

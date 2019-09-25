@@ -5,8 +5,8 @@ export default gql`
         hotel(id: ID!): Hotel
         hotels: [Hotel!]
     },
-    extend type Mutations {
-        createHotel(name: String!, country: String!, city: String!, address: String! rooms: [CreateRoomInput]): Hotel!
+    extend type Mutation {
+        createHotel(name: String!, country: String!, city: String!, address: String! rooms: [CreateRoomInput]): Hotel
         addRoomToHotel(id: ID!, rooms: [CreateRoomInput!]): Hotel!
         setRoomStatus(id: ID!, status: Boolean!): Hotel!
     },
