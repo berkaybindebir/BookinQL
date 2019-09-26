@@ -2,6 +2,7 @@
 import mongoose, { Schema } from "mongoose";
 import { getCountries, getCityByCountry } from "../utils/countries";
 import _ from "lodash";
+import { checkRoomNumbers } from "../validator";
 
 const roomSchema = new Schema({
 	roomNumber: {
@@ -47,9 +48,11 @@ const hotelSchema = new Schema({
 async function addRoomToHotel(hotelID, newRooms) {
 	try {
 		let hotel = await Hotel.findById(hotelID);
-		if (!hotel) throw new Error("Hotel is not exist");
-
 		let rooms = hotel.rooms;
+		let { error = "" } = checkRoomNumbers(newRooms, rooms);
+
+		if (!hotel) throw new Error("Hotel is not exist");
+		if (error) throw new Error(error);
 		rooms.push(...newRooms);
 
 		return await hotel.save();
@@ -60,7 +63,9 @@ async function addRoomToHotel(hotelID, newRooms) {
 
 async function createHotel(newHotel) {
 	try {
+		let { error = "" } = checkRoomNumbers(newHotel.rooms);
 		let allowedCities = getCityByCountry(newHotel.country);
+		if (error) throw new Error(error);
 		if (allowedCities && allowedCities.includes(newHotel.city)) {
 			let hotel = await Hotel.create(newHotel);
 			return hotel;
