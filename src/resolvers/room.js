@@ -3,7 +3,7 @@ import { Hotel } from "../models";
 
 export default {
 	Query: {
-		hotel: (root, { id }, contx, info) => Hotel.findById(id),
+		hotel: (root, { id }, contx, info) => Hotel.getHotel(id),
 		hotels: (root, args, contx, info) => Hotel.find({})
 	},
 	Mutation: {

@@ -77,9 +77,15 @@ async function createHotel(newHotel) {
 	}
 }
 
+async function getHotel(id) {
+	let hotel = Hotel.findById(id);
+	return hotel.sort("rooms -roomNumber");
+}
+
 // async function bookRoom(hotelID, room)
 
 hotelSchema.statics = {
+	getHotel,
 	addRoomToHotel,
 	createHotel
 };

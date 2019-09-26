@@ -1,44 +1,60 @@
 import { gql } from "apollo-server-express";
 
 export default gql`
-    extend type Query {
-        hotel(id: ID!): Hotel
-        hotels: [Hotel!]
-    },
-    extend type Mutation {
-        createHotel(name: String!, country: String!, city: String!, address: String! rooms: [CreateRoomInput]): Hotel
-        addRoomToHotel(id: ID!, rooms: [CreateRoomInput!]): Hotel!
-        setRoomStatus(id: ID!, status: Boolean!): Hotel!
-    },
-    type Hotel {
-        id: ID!
-        name: String!
-        country: String!
-        city: String!
-        address: String!
-        rooms: [Room]!
-    }
+	extend type Query {
+		hotel(id: ID!): Hotel
+		hotels: [Hotel!]
+	}
+	extend type Mutation {
+		createHotel(
+			name: String!
+			country: String!
+			city: String!
+			address: String!
+			rooms: [CreateRoomInput]
+		): Hotel
+		addRoomToHotel(id: ID!, rooms: [CreateRoomInput!]): Hotel!
+		setRoomStatus(id: ID!, roomNumber: Int!, reservation: ReservationInput): Hotel!
+	}
+	type Hotel {
+		id: ID!
+		name: String!
+		country: String!
+		city: String!
+		address: String!
+		rooms: [Room]!
+	}
 
-    type Room {
-        roomNumber: Int!
-        type: String!
-        price: Int!
-        currency: String!
-        available: Boolean!
-    }
+	type Room {
+		roomNumber: Int!
+		type: String!
+		price: Int!
+		currency: String!
+		reservations: [Reservation]
+	}
 
-    input CreateRoomInput {
-        roomNumber: Int!
-        type: RoomTypes
-        price: Int!
-        currency: String!
-        available: Boolean!
-    }
+	type Reservation {
+		from: String!
+		to: String!
+	}
 
-    enum RoomTypes {
-        STANDARD
-        LUX
-        ULTRA_LUX
-        KING_SIZE
-    }
+	input CreateRoomInput {
+		roomNumber: Int!
+		type: RoomTypes
+		price: Int!
+		currency: String!
+		reservation: [ReservationInput!]
+	}
+
+	input ReservationInput {
+		from: String!
+		to: String!
+	}
+
+	enum RoomTypes {
+		STANDARD
+		LUX
+		ULTRA_LUX
+		KING_SIZE
+	}
 `;
