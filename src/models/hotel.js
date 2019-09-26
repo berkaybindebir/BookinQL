@@ -21,10 +21,12 @@ const roomSchema = new Schema({
 		type: String,
 		enum: ["USD", "EUR", "TL"]
 	},
-	available: {
-		type: Boolean,
-		default: false
-	}
+	reservations: [
+		{
+			from: String,
+			to: String
+		}
+	]
 });
 
 const hotelSchema = new Schema({
@@ -44,6 +46,11 @@ const hotelSchema = new Schema({
 	},
 	rooms: [roomSchema]
 });
+
+async function getHotel(id) {
+	let hotel = Hotel.findById(id);
+	return hotel.sort("rooms -roomNumber");
+}
 
 async function addRoomToHotel(hotelID, newRooms) {
 	try {
@@ -77,17 +84,20 @@ async function createHotel(newHotel) {
 	}
 }
 
-async function getHotel(id) {
-	let hotel = Hotel.findById(id);
-	return hotel.sort("rooms -roomNumber");
-}
+// async function bookRoom(hotelID, roomNumber) {
+// 	hotelID, roomNumber, status;
+// 	try {
 
-// async function bookRoom(hotelID, room)
+// 	} catch (e) {
+// 		console.error(e);
+// 	}
+// }
 
 hotelSchema.statics = {
 	getHotel,
 	addRoomToHotel,
-	createHotel
+	createHotel,
+	// bookRoom
 };
 
 const Hotel = mongoose.model("Hotel", hotelSchema);

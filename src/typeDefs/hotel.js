@@ -43,7 +43,7 @@ export default gql`
 		type: RoomTypes
 		price: Int!
 		currency: String!
-		reservation: [ReservationInput!]
+		reservations: [ReservationInput!]
 	}
 
 	input ReservationInput {
