@@ -8,8 +8,8 @@ export default {
 	},
 	Mutation: {
 		createHotel: async (root, args, contx, info) => Hotel.createHotel(args),
-		addRoomToHotel: async (root, args, contx, info) =>
-			Hotel.addRoomToHotel(args.id, args.rooms),
+		addRoomToHotel: async (root, { id, rooms }, contx, info) =>
+			Hotel.addRoomToHotel(id, rooms),
 		bookRoom: (root, { roomID, reservation }, contx, info) =>
 			Hotel.bookRoom(roomID, reservation)
 	}

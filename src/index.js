@@ -1,6 +1,6 @@
 import { ApolloServer } from "apollo-server-express";
 import express from "express";
-import morgan from "morgan";
+import { LoggingLink } from "apollo-logger";
 import mongoose from "mongoose";
 import typeDefs from "./typeDefs";
 import resolvers from "./resolvers";
@@ -20,12 +20,12 @@ const { PORT, NODE_ENV, MLAB_USER, MLAB_PASSWORD, MONGO_URI } = process.env;
 		);
 
 		const app = express();
-		// app.use(morgan(":method :url :status :res[content-length] - :response-time ms"));
 
 		const server = new ApolloServer({
 			typeDefs,
 			resolvers,
-			playground: NODE_ENV === "DEVELOPMENT"
+			playground: NODE_ENV === "DEVELOPMENT",
+			logger: () => new LoggingLink({ logger: console.log })
 		});
 
 		server.applyMiddleware({ app });
