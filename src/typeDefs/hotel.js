@@ -22,6 +22,7 @@ export default gql`
 		country: String!
 		city: String!
 		address: String!
+		currency: String!
 		rooms: [Room]!
 	}
 
@@ -30,7 +31,6 @@ export default gql`
 		roomNumber: Int!
 		type: String!
 		price: Int!
-		currency: String!
 		reservations: [Reservation]
 	}
 

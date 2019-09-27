@@ -16,10 +16,6 @@ const roomSchema = new Schema({
 	price: {
 		type: Number
 	},
-	currency: {
-		type: String,
-		enum: ["USD", "EUR", "TL"]
-	},
 	reservations: [
 		{
 			from: String,
@@ -42,6 +38,10 @@ const hotelSchema = new Schema({
 	address: {
 		type: String,
 		required: true
+	},
+	currency: {
+		type: String,
+		enum: ["USD", "EUR", "TL"]
 	},
 	rooms: [roomSchema]
 });
