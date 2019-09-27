@@ -10,6 +10,14 @@ function checkRoomNumbers(newRooms, allRooms = []) {
 	return isValid;
 }
 
+function isReservationDateValid(from, to) {
+	const schema = Joi.date().min(Date.now());
+	let isValidFrom = schema.validate(from);
+	let isValidTo = schema.min(from).validate(to);
+	return { isValidFrom, isValidTo };
+}
+
 module.exports = {
-	checkRoomNumbers
+	checkRoomNumbers,
+	isReservationDateValid
 };

@@ -1,7 +1,7 @@
 /* eslint-disable no-unreachable */
 import mongoose, { Schema } from "mongoose";
 import { getCountries, getCityByCountry } from "../utils/countries";
-import { checkRoomNumbers } from "../validator";
+import { checkRoomNumbers, isReservationDateValid } from "../validator";
 
 const roomSchema = new Schema({
 	roomNumber: {
@@ -85,12 +85,17 @@ async function createHotel(newHotel) {
 
 async function bookRoom(roomID, reservation) {
 	let { from, to } = reservation;
+	let { isValidFrom, isValidTo } = isReservationDateValid(from, to);
 	try {
-		return await Hotel.findOneAndUpdate(
-			{ rooms: { $elemMatch: { _id: roomID } } },
-			{ $push: { "rooms.$.reservations": { from, to } } },
-			{ new: true }
-		);
+		if (isValidFrom.error || isValidTo.error) {
+			throw new Error("The Given Dates are not invalid");
+		} else {
+			return await Hotel.findOneAndUpdate(
+				{ rooms: { $elemMatch: { _id: roomID } } },
+				{ $push: { "rooms.$.reservations": { from, to } } },
+				{ new: true }
+			);
+		}
 	} catch (e) {
 		console.error(e);
 	}
