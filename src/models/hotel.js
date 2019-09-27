@@ -1,7 +1,6 @@
 /* eslint-disable no-unreachable */
 import mongoose, { Schema } from "mongoose";
 import { getCountries, getCityByCountry } from "../utils/countries";
-import _ from "lodash";
 import { checkRoomNumbers } from "../validator";
 
 const roomSchema = new Schema({
@@ -84,20 +83,24 @@ async function createHotel(newHotel) {
 	}
 }
 
-// async function bookRoom(hotelID, roomNumber) {
-// 	hotelID, roomNumber, status;
-// 	try {
-
-// 	} catch (e) {
-// 		console.error(e);
-// 	}
-// }
+async function bookRoom(roomID, reservation) {
+	let { from, to } = reservation;
+	try {
+		return await Hotel.findOneAndUpdate(
+			{ rooms: { $elemMatch: { _id: roomID } } },
+			{ $push: { "rooms.$.reservations": { from, to } } },
+			{ new: true }
+		);
+	} catch (e) {
+		console.error(e);
+	}
+}
 
 hotelSchema.statics = {
 	getHotel,
 	addRoomToHotel,
 	createHotel,
-	// bookRoom
+	bookRoom
 };
 
 const Hotel = mongoose.model("Hotel", hotelSchema);

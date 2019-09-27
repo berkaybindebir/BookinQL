@@ -14,7 +14,7 @@ export default gql`
 			rooms: [CreateRoomInput]
 		): Hotel
 		addRoomToHotel(id: ID!, rooms: [CreateRoomInput!]): Hotel!
-		setRoomStatus(id: ID!, roomNumber: Int!, reservation: ReservationInput): Hotel!
+		bookRoom(roomID: ID!, reservation: ReservationInput): Hotel!
 	}
 	type Hotel {
 		id: ID!
@@ -26,6 +26,7 @@ export default gql`
 	}
 
 	type Room {
+		id: ID!
 		roomNumber: Int!
 		type: String!
 		price: Int!
