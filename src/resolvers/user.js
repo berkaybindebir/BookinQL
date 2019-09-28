@@ -1,18 +1,31 @@
 /* eslint-disable no-unused-vars */
-import Joi from "@hapi/joi";
 import { AuthenticationError, UserInputError } from "apollo-server-express";
 import { User } from "../models";
 import { signIn, signUp } from "../schemas";
 import jwt from "jsonwebtoken";
 
+// TODO: Use Directives instead of checking user inside of resolver function
 export default {
 	Query: {
 		currentUser: (root, args, contx, info) => {
-			let token = contx.req.headers.authorization;
-			let decodedToken = jwt.verify(token, process.env.SECRET_KEY);
-			console.log(decodedToken);
+			let token = contx.token;
+
+			if (!token) throw new AuthenticationError("Token must provided!");
+
+			let user = jwt.verify(token, process.env.SECRET_KEY);
+
+			if (!user) throw new AuthenticationError("Unauthorized!");
+			return { id: user.id, token };
 		},
-		user: (root, { id }, contx, info) => User.findById(id),
+		user: (root, { id }, contx, info) => {
+			let token = contx.token;
+			let user = jwt.verify(token, process.env.SECRET_KEY);
+
+			if (!token || !user || user.type !== "ADMIN")
+				throw new AuthenticationError("Unauthorized!");
+
+			return User.findById(id);
+		},
 		users: (root, args, contx, info) => User.find({}).sort("createdAt")
 	},
 	Mutation: {
