@@ -24,6 +24,7 @@ const { PORT, NODE_ENV, MLAB_USER, MLAB_PASSWORD, MONGO_URI } = process.env;
 		const server = new ApolloServer({
 			typeDefs,
 			resolvers,
+			context: ({ req, res }) => ({ req, res }),
 			playground: NODE_ENV === "DEVELOPMENT",
 			logger: () => new LoggingLink({ logger: console.log })
 		});

@@ -1,7 +1,7 @@
 /* eslint-disable no-unreachable */
 import mongoose, { Schema } from "mongoose";
 import { getCountries, getCityByCountry } from "../utils/countries";
-import { checkRoomNumbers, isReservationDateValid } from "../validator";
+import { checkRoomNumbers, isReservationDateValid } from "../utils/validator";
 
 const roomSchema = new Schema({
 	roomNumber: {
